@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"log"
-	"os"
 	"time"
 
 	"github.com/google/gopacket"
@@ -18,24 +17,34 @@ func main() {
 		log.Fatalf("could not open live stream: %v", err)
 	}
 
-	tcpDump(handle)
+	fmt.Println("Starting to read packets...")
+
+	tlsDump(handle)
 }
 
-func tcpDump(src gopacket.PacketDataSource) {
+func tlsDump(src gopacket.PacketDataSource) {
+	var (
+		eth     layers.Ethernet
+		ip4     layers.IPv4
+		tcp     layers.TCP
+		tls     layers.TLS
+		decoded []gopacket.LayerType
+	)
+
 	source := gopacket.NewPacketSource(src, layers.LayerTypeEthernet)
-	//source.Lazy = true
-	source.NoCopy = true
-	//source.DecodeStreamsAsDatagrams = true
-	_, _ = fmt.Fprintln(os.Stderr, "Starting to read packets...")
-
-	var count int
-
-	var bytes int64
+	parser := gopacket.NewDecodingLayerParser(layers.LayerTypeEthernet, &eth, &ip4, &tcp, &tls)
 
 	for packet := range source.Packets() {
-		count++
+		if err := parser.DecodeLayers(packet.Data(), &decoded); err != nil {
+			// err contains error parse layer
+			continue
+		}
 
-		bytes += int64(len(packet.Data()))
-		fmt.Println(packet)
+		for _, layerType := range decoded {
+			if layerType == layers.LayerTypeTLS {
+				fmt.Println("    TLS: ", ip4.SrcIP, "->", ip4.DstIP, tcp.SrcPort, "->", tcp.DstPort, len(tcp.Options))
+				//fmt.Println(tls.Handshake[0].Version)
+			}
+		}
 	}
 }
