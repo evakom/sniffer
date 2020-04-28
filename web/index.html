@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<title>Sniffer page</title>
+</head>
+<body>
+<h3>TLS packets:</h3>
+<div id="dialog"></div>
+
+<script>
+
+    let comps = {
+        dialog: document.querySelector('#dialog'),
+    };
+
+    let ws = new WebSocket('ws://localhost:8080/socket');
+    ws.onclose = () => console.log('closed');
+
+    // comps.send.onclick = () => {
+    //     let msg = {
+    //         type: 'message',
+    //         data: comps.message.value,
+    //     };
+    //     if (msg.data === '') return;
+    //     ws.send(JSON.stringify(msg));
+    //     comps.message.value = '';
+    // };
+
+    ws.onmessage = e => {
+        let msg = JSON.parse(e.data);
+        if (msg.type === 'ping') {
+            ws.send(JSON.stringify({type: 'pong'}));
+            return;
+        }
+
+        if (msg.type === 'message') {
+            let msgComponent = document.createElement('DIV');
+            msgComponent.innerText = msg.data;
+            comps.dialog.appendChild(msgComponent);
+        }
+    };
+
+    ws.onopen = () => {
+        console.log('connected');
+    };
+
+</script>
+
+</body>
+</html>
