@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	pcapTestFile = "sniffer_test.pcap"
+	pcapTestFile = "../../test/sniffer_test.pcap"
 	testData     = `192.168.137.7,60208,3.123.217.208,443(https),3
 3.123.217.208,443(https),192.168.137.7,60208,3
 192.168.137.7,60208,3.123.217.208,443(https),3
