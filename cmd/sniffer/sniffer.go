@@ -27,7 +27,7 @@ func tlsDump(src gopacket.PacketDataSource, dst io.Writer) error {
 		}
 
 		for _, layerType := range decoded {
-			if layerType == layers.LayerTypeTLS {
+			if layerType == layers.LayerTypeTLS && len(tls.Handshake) > 0 {
 				_, err := fmt.Fprintf(dst, "%s,%s,%s,%s,%d\n",
 					ip4.SrcIP, tcp.SrcPort, ip4.DstIP, tcp.DstPort, len(tcp.Options))
 				if err != nil {

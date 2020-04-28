@@ -17,7 +17,7 @@ const timeout = 30 * time.Second
 
 func main() {
 	iFace := flag.String("i", "eth0", "Interface to read packets from")
-	snapLen := flag.Int("s", 65536, "Snap length (number of bytes max to read per packet")
+	snapLen := flag.Int("s", 1536, "Snap length (number of bytes max to read per packet")
 	promisc := flag.Bool("p", false, "Set promiscuous mode")
 	listenHTTP := flag.String("h", "no", "Host:port for http server listen")
 
