@@ -19,13 +19,13 @@ func main() {
 	iFace := flag.String("i", "eth0", "Interface to read packets from")
 	snapLen := flag.Int("s", 65536, "Snap length (number of bytes max to read per packet")
 	promisc := flag.Bool("p", false, "Set promiscuous mode")
-	listenHTTP := flag.String("h", "", "Host:port for http server listen")
+	listenHTTP := flag.String("h", "no", "Host:port for http server listen")
 
 	flag.Parse()
 
 	srv := httpserver.New()
 
-	if *listenHTTP != "" {
+	if *listenHTTP != "no" {
 		go func() {
 			fmt.Println("Starting http server at host:port -", *listenHTTP)
 
@@ -43,7 +43,7 @@ func main() {
 
 	fmt.Println("Starting to read packets ...")
 
-	if *listenHTTP == "" {
+	if *listenHTTP == "no" {
 		err = tlsDump(handle, os.Stdout)
 	} else {
 		err = tlsDump(handle, srv.Writer)

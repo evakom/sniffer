@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"io"
-	"log"
 
 	"github.com/google/gopacket"
 	"github.com/google/gopacket/layers"
@@ -32,8 +31,7 @@ func tlsDump(src gopacket.PacketDataSource, dst io.Writer) error {
 				_, err := fmt.Fprintf(dst, "%s,%s,%s,%s,%d\n",
 					ip4.SrcIP, tcp.SrcPort, ip4.DstIP, tcp.DstPort, len(tcp.Options))
 				if err != nil {
-					//return fmt.Errorf("error write to destination: %w", err)
-					log.Printf("error write to destination: %v", err)
+					return fmt.Errorf("error write to destination: %w", err)
 				}
 			}
 		}

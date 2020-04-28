@@ -40,7 +40,8 @@ The app should work in Docker. Make sure you provide all the details how it woul
     -p promiscuous mode  
     -s maximum buffer size to read each packet  
     -h host:port for http server listen websocket (this option disables stdout stream output)      
-    example: `sudo ./sniffer -i eth0 -p -s 2048 -h :8080`
+    example: `sudo ./sniffer -i eth0 -p -s 2048 -h :8080`  
+    note: if `-h no` than no http server will be started  
     
 #### Docker support:
  - `make docker-build`

@@ -1,7 +1,6 @@
 package httpserver
 
 import (
-	"fmt"
 	"io"
 	"log"
 
@@ -27,8 +26,6 @@ func (w *writer) Write(p []byte) (int, error) {
 			w.conn = append(w.conn[:i], w.conn[i+1:]...)
 		}
 	}
-
-	fmt.Println(m)
 
 	return len(p), nil
 }

@@ -49,7 +49,6 @@ func (srv *Server) socketHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		if msg.Type == models.MTPong {
-			fmt.Println("browser pong received")
 			continue
 		}
 	}
