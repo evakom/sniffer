@@ -4,13 +4,14 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"os"
 	"time"
 
 	"github.com/google/gopacket/pcap"
 )
 
-// If timeout greater than zero only set the PCAP handle into non-blocking mode.
-// If the user wants to block forever, libpcap will handle that.
+// If timeout greater than zero it only set the PCAP handle into non-blocking mode.
+// If we want to block forever, use zero and libpcap will handle that.
 const timeout = 30 * time.Second
 
 func main() {
@@ -21,11 +22,14 @@ func main() {
 	flag.Parse()
 
 	handle, err := pcap.OpenLive(*iFace, int32(*snapLen), *promisc, timeout)
+
 	if err != nil {
 		log.Fatal("could not open live stream:", err)
 	}
 
 	fmt.Println("Starting to read packets...")
 
-	tlsDump(handle)
+	if err := tlsDump(handle, os.Stdout); err != nil {
+		log.Fatal(err)
+	}
 }

@@ -28,7 +28,8 @@ The app should work in Docker. Make sure you provide all the details how it woul
 - There should be a readme file with a description on how to compile and use the app.
 
 #### Install:
- - `sudo apt install libpcap-dev`
+ - `sudo apt install libpcap-dev`  
+    (Debian, for others see their docs)
  
 #### Build:
  - `go build -o sniffer`
