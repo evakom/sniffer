@@ -1,7 +1,6 @@
 package httpserver
 
 import (
-	"errors"
 	"fmt"
 	"io"
 	"log"
@@ -12,8 +11,7 @@ import (
 
 type writer struct {
 	io.Writer
-	conn     *websocket.Conn
-	upgraded bool
+	conn []*websocket.Conn
 }
 
 func (w *writer) Write(p []byte) (int, error) {
@@ -22,12 +20,12 @@ func (w *writer) Write(p []byte) (int, error) {
 		Data: string(p),
 	}
 
-	if !w.upgraded {
-		return 0, errors.New("websocket connection is not open")
-	}
+	for i, c := range w.conn {
+		if err := c.WriteJSON(m); err != nil {
+			log.Printf("ws msg write err: %v", err)
 
-	if err := w.conn.WriteJSON(m); err != nil {
-		log.Printf("ws msg write err: %v", err)
+			w.conn = append(w.conn[:i], w.conn[i+1:]...)
+		}
 	}
 
 	fmt.Println(m)

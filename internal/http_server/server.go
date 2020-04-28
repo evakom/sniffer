@@ -13,7 +13,6 @@ const wsBufferSize = 1024
 type Server struct {
 	router   *chi.Mux
 	upgrader *websocket.Upgrader
-	conn     *websocket.Conn
 	Writer   *writer
 }
 
@@ -30,7 +29,7 @@ func New() *Server {
 		router:   router,
 		upgrader: upgrader,
 		Writer: &writer{
-			conn: new(websocket.Conn),
+			conn: make([]*websocket.Conn, 0),
 		},
 	}
 
