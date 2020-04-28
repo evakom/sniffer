@@ -34,4 +34,7 @@ The app should work in Docker. Make sure you provide all the details how it woul
  - `go build -o sniffer`
 
 #### Run:
- - `sudo ./sniffer`
+ - `sudo ./sniffer` `[-i "eth0" -p -s 2048]`  
+    -i "network interface"  
+    -p promiscuous mode  
+    -s maximum buffer size to read each packet
