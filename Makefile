@@ -1,4 +1,4 @@
-.PHONY: build run docker-build docker-run
+.PHONY: build run test docker-build docker-run
 
 IFACE ?= enp5s0
 PROM ?= false
@@ -9,6 +9,9 @@ build:
 
 run:
 	./app/sniffer -i $(IFACE) -p=$(PROM) -s $(SIZE) -h $(HTTP)
+
+test:
+	go test ./... -v -cover
 
 docker-build:
 	docker build -t sniffer -f ./build/package/sniffer/Dockerfile .

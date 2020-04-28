@@ -23,12 +23,13 @@ func main() {
 
 	flag.Parse()
 
+	srv := httpserver.New()
+
 	if *listenHTTP != "" {
 		go func() {
-			serv := httpserver.New()
-
 			fmt.Println("Starting http server at host:port -", *listenHTTP)
-			if err := serv.Start(); err != nil {
+
+			if err := srv.Start(); err != nil {
 				log.Fatal("http server start error", err)
 			}
 		}()
@@ -42,7 +43,13 @@ func main() {
 
 	fmt.Println("Starting to read packets ...")
 
-	if err := tlsDump(handle, os.Stdout); err != nil {
+	if *listenHTTP == "" {
+		err = tlsDump(handle, os.Stdout)
+	} else {
+		err = tlsDump(handle, srv.Writer)
+	}
+
+	if err != nil {
 		log.Fatal(err)
 	}
 }

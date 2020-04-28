@@ -39,9 +39,10 @@ The app should work in Docker. Make sure you provide all the details how it woul
     -i "network interface"  
     -p promiscuous mode  
     -s maximum buffer size to read each packet  
-    example: `sudo ./sniffer -i eth0 -p -s 2048`
+    -h host:port for http server listen websocket (this option disables stdout stream output)      
+    example: `sudo ./sniffer -i eth0 -p -s 2048 -h :8080`
     
 #### Docker support:
  - `make docker-build`
  - `[ENV=PARAM] make docker-run`  
-    example: `IFACE=eth1 PROM=true SIZE=1024 make docker-run`
+    example: `HTTP=:8080 IFACE=eth1 PROM=true SIZE=1024 make docker-run`

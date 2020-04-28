@@ -17,19 +17,10 @@
     let ws = new WebSocket('ws://localhost:8080/socket');
     ws.onclose = () => console.log('closed');
 
-    // comps.send.onclick = () => {
-    //     let msg = {
-    //         type: 'message',
-    //         data: comps.message.value,
-    //     };
-    //     if (msg.data === '') return;
-    //     ws.send(JSON.stringify(msg));
-    //     comps.message.value = '';
-    // };
-
     ws.onmessage = e => {
         let msg = JSON.parse(e.data);
         if (msg.type === 'ping') {
+            console.log('server ping received');
             ws.send(JSON.stringify({type: 'pong'}));
             return;
         }
